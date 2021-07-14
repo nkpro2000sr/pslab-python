@@ -35,7 +35,9 @@ SDO_WRITE_DATA16 = 16
 @pytest.fixture
 def master(handler: SerialHandler) -> SPIMaster:
     handler._logging = True
-    return SPIMaster(device=handler)
+    spi_master = SPIMaster(device=handler)
+    yield spi_master
+    spi_master.set_parameters()
 
 
 @pytest.fixture
@@ -138,4 +140,4 @@ def test_write16(la: LogicAnalyzer, slave: SPISlave):
     assert len(sdo) == SDO_WRITE_DATA16
 
 
-# TODO test_{transfer}{8,16}
+# TODO test_{transfer,read}{8,16}
